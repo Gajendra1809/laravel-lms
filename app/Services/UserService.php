@@ -134,6 +134,7 @@ class UserService
         $caredentials = $request->only('email', 'password');
             
         if(Auth::attempt($caredentials)){
+            /** @var \App\Models\User $user */
             $user = Auth::user();
             $token = $user->createToken('auth_token')->accessToken;
 

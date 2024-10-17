@@ -15,11 +15,13 @@ use App\Http\Controllers\AuthController;
 |
 */
 
+// User Authentication routes
 Route::post('/users', [UserController::class, 'store']);
 Route::post('/users/login', [AuthController::class, 'login']);
 Route::post('forget-password/request-token', [AuthController::class, 'requestToken']);
 Route::post('forget-password/reset', [AuthController::class, 'resetPassword']);
 
+// User Management routes
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/users/search', [UserController::class, 'search']);

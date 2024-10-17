@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Str;
+use App\Enums\UserRoleEnum;
 
 class User extends Authenticatable
 {
@@ -59,6 +60,22 @@ class User extends Authenticatable
                 $model->uuid = (string) Str::uuid();
             }
         );
+    }
+
+    /**
+     * Return the role as string.
+     *
+     * @param  int  $value
+     * @return string
+     */
+    public function getRoleAttribute($value){
+        if($value == UserRoleEnum::SUPERADMIN->value){
+            return UserRoleEnum::SUPERADMIN->label();
+        }elseif($value == UserRoleEnum::ADMIN->value){
+            return UserRoleEnum::ADMIN->label();
+        }else{
+            return UserRoleEnum::USER->label();
+        }
     }
 
     /**
