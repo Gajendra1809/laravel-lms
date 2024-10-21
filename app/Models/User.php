@@ -92,4 +92,10 @@ class User extends Authenticatable
         return self::whereRaw("to_tsvector('english', name || ' ' || email || ' ' || role) @@ plainto_tsquery('english', ?)", [$query])
             ->get();
     }
+
+    public function books()
+    {
+        return $this->hasMany(Book::class, 'admin_id', 'id');
+    }
+    
 }

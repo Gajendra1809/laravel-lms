@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Requests\ResetPasswordRequest;
-use App\Http\Requests\LoginRequest;
+use App\Http\Requests\UserRequests\ResetPasswordRequest;
+use App\Http\Requests\UserRequests\LoginRequest;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\JsonResponseTrait;

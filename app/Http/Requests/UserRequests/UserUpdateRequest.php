@@ -1,19 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\UserRequests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
 use Illuminate\Validation\Rule;
 
-class UserUpdateRequest extends FormRequest
+class UserUpdateRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.

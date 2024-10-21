@@ -8,9 +8,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        DB::statement('CREATE INDEX users_fulltext_index ON users USING gin(to_tsvector(\'english\', name || \' \' || email || \' \' || role))');
+        DB::statement('CREATE INDEX books_fulltext_index ON books USING gin(to_tsvector(\'english\', title || \' \' || author || \' \' || isbn || \' \' || available))');
     }
 
     /**
@@ -18,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement('DROP INDEX users_fulltext_index');
+        DB::statement('DROP INDEX books_fulltext_index');
     }
 };

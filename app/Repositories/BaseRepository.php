@@ -68,4 +68,10 @@ class BaseRepository
         }
         return $record->delete();
     }
+
+    // Search or filter records
+    public function search($query)
+    {
+        return $this->model->search($query);
+    }
 }

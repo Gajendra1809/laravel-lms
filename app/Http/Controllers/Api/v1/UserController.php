@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\UserCreateRequest;
-use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\UserRequests\UserCreateRequest;
+use App\Http\Requests\UserRequests\UserUpdateRequest;
+use App\Http\Controllers\Controller;
 use App\Services\UserService;
 use App\Traits\JsonResponseTrait;
 use App\Models\User;

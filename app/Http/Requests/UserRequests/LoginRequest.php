@@ -1,18 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\UserRequests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
 
-class LoginRequest extends FormRequest
+class LoginRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -33,4 +26,5 @@ class LoginRequest extends FormRequest
             'email.exists' => 'The email address is not registered'
         ];
     }
+
 }

@@ -6,7 +6,6 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Validation\ValidationException;
 use App\Traits\JsonResponseTrait;
-
 use Illuminate\Auth\AuthenticationException;
 
 class Handler extends ExceptionHandler

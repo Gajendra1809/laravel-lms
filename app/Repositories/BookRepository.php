@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\User;
+use App\Models\Book;
 
 /**
  * Repository for the User model.
@@ -10,16 +10,16 @@ use App\Models\User;
  * @package App\Repositories
  *
  */
-class UserRepository extends BaseRepository
+class BookRepository extends BaseRepository
 {
     /**
      * Constructor to bind model to repo
      *
-     * @param User $user User model
+     * @param Book $book Book model
      */
-    public function __construct(User $user)
+    public function __construct(Book $book)
     {
-        $this->model = $user;
+        $this->model = $book;
     }
 
 }
