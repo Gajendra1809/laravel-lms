@@ -74,4 +74,21 @@ class BaseRepository
     {
         return $this->model->search($query);
     }
+
+    public function findWithConditions(array $conditions = [], array $relations = [], bool $singleResult = false)
+    {
+        $query = $this->model->newQuery();
+        foreach ($conditions as $column => $value) {
+            if (is_array($value)) {
+                $query = $query->where($column, $value[0], $value[1]);
+            } else {
+                $query = $query->where($column, $value);
+            }
+        }
+        if (!empty($relations)) {
+            $query = $query->with($relations);
+        }
+        return $singleResult ? $query->first() : $query->get();
+    }
+
 }

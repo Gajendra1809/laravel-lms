@@ -21,6 +21,14 @@ class BookService
         return $this->bookRepository->create($data);
     }
 
+    public function getBookById(int $id){
+        $book = $this->bookRepository->find($id);
+        if($book==null) {
+            return false;
+        }
+        return $book;
+    }
+
     public function getBook(string $uuid){
         return $this->bookRepository->findByUuid($uuid);
     }

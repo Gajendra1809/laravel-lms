@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\UserController;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\BookController;
+use App\Http\Controllers\Api\v1\BorrowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,5 +40,17 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/books/show/{uuid}', [BookController::class, 'show'])->middleware('check_valid_uuid');
     Route::put('/books/{uuid}', [BookController::class, 'update'])->middleware('check_valid_uuid');
     Route::delete('/books/{uuid}', [BookController::class, 'destroy'])->middleware('check_valid_uuid');
+
+    // Borrowing Management routes
+
+    // for users
+    Route::get('/borrow/{uuid}', [BorrowController::class, 'borrow'])->middleware('check_valid_uuid');
+    Route::get('/borrow/{uuid}/return', [BorrowController::class, 'returnBook'])->middleware('check_valid_uuid');
+    Route::get('/borrows/myBorrows', [BorrowController::class, 'borrowsByUser']);
+
+    // for admins
+    Route::get('admin/borrowings', [BorrowController::class, 'index']);
+    Route::get('admin/book/{uuid}/borrowings', [BorrowController::class, 'bookBorrower'])->middleware('check_valid_uuid');
+    Route::get('admin/overdue', [BorrowController::class, 'overdueBooks']);
 
 });
