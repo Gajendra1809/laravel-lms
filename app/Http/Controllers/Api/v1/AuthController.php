@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Requests\UserRequests\ResetPasswordRequest;
 use App\Http\Requests\UserRequests\LoginRequest;
 use App\Http\Controllers\Controller;
+use App\Services\LoggingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\JsonResponseTrait;
@@ -27,7 +28,8 @@ class AuthController extends Controller
      * @param UserService $userService The user service dependency.
      */
     public function __construct(
-     protected UserService $userService
+     protected UserService $userService,
+     protected LoggingService $logService
     ){
     }
 
@@ -47,6 +49,7 @@ class AuthController extends Controller
             }
             return $this->successResponse($response, 'User logged in successfully', 200);
         } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse('User not logged in', $th->getMessage(), 500);
         }
     }
@@ -63,6 +66,7 @@ class AuthController extends Controller
             $request->user()->token()->revoke();
             return $this->successResponse('User logged out successfully');
         } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse('Something went wrong', $th->getMessage());
         }
     }
@@ -86,6 +90,7 @@ class AuthController extends Controller
             $token = $this->userService->generateResetToken($request->email);
             return $this->successResponse($token, 'Token generated successfully');
         } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse('Error', $th->getMessage(), 500);
         }
     }
@@ -106,6 +111,7 @@ class AuthController extends Controller
             }
             return $this->successResponse($message, 'Password reset successfully');
         } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse('Something went wrong', $th->getMessage(), 500);
         }
     }

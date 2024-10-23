@@ -94,13 +94,19 @@ class BorrowService
             $response['success'] = true;
             $response['msg'] = 'Book returned successfully';
             $response['status'] = 200;
-            $response['data'] = null;
+            $response['data'] = $borrowRecord;
         }
         return $response;
     }
 
     public function overdueBooks(){
         $conditions = ['due_date' => ['<', now()], 'return_date' => null];
+        $relations = ['user', 'book'];
+        return $this->borrowRepository->findWithConditions($conditions, $relations);
+    }
+
+    public function allReturnedBooks(){
+        $conditions = ['return_date' => ['<>', null]];
         $relations = ['user', 'book'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }

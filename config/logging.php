@@ -52,10 +52,35 @@ return [
     */
 
     'channels' => [
+
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'user', 'book', 'borrowing', 'error'],
             'ignore_exceptions' => false,
+        ],
+
+        'user' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/user.log'),
+            'level' => 'info',
+        ],
+
+        'book' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/book.log'),
+            'level' => 'info',
+        ],
+
+        'borrowing' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/borrowing.log'),
+            'level' => 'info',
+        ],
+
+        'error' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/error.log'),
+            'level' => 'error',
         ],
 
         'single' => [

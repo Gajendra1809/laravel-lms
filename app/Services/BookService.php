@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exports\BooksExport;
+use App\Imports\BooksImport;
 use App\Repositories\BookRepository;
 use Illuminate\Support\Facades\Gate;
 
@@ -57,5 +59,13 @@ class BookService
 
     public function authorize($book){
         Gate::authorize('updateDel', $book);
+    }
+
+    public function exportAllBooks(){
+        return $this->bookRepository->exportAll(new BooksExport, 'books.xlsx');
+    }
+
+    public function importBooks(){
+        return $this->bookRepository->importData(new BooksImport, request()->file('file'));
     }
 }

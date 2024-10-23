@@ -132,18 +132,15 @@ class UserService
      */
     public function login($request){
         $caredentials = $request->only('email', 'password');
-            
         if(Auth::attempt($caredentials)){
             /** @var \App\Models\User $user */
             $user = Auth::user();
             $token = $user->createToken('auth_token')->accessToken;
-
             return [
                 "access_token" => $token,
                 "token_type" => "Bearer",
                 "User" => $user
             ];
-
         }else{
             return false;
         }
@@ -177,21 +174,17 @@ class UserService
      * @return bool Returns true if the password was reset successfully, false otherwise.
      */
     public function resetPassword($request){
-
         $reset = PasswordReset::where('email', $request->email)->first();
-
         if (!$reset || !Hash::check($request->token, $reset->token)) {
             return false;
         }
         if (Carbon::parse($reset->created_at)->addMinutes(60)->isPast()) {
             return false;
         }
-
         $user = User::where('email', $request->email)->first();
         $user->password = Hash::make($request->password);
         $user->save();
         PasswordReset::where('email', $request->email)->delete();
-
         return true;
     }
 }

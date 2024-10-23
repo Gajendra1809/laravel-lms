@@ -40,6 +40,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/books/show/{uuid}', [BookController::class, 'show'])->middleware('check_valid_uuid');
     Route::put('/books/{uuid}', [BookController::class, 'update'])->middleware('check_valid_uuid');
     Route::delete('/books/{uuid}', [BookController::class, 'destroy'])->middleware('check_valid_uuid');
+    Route::post('/admin/import/books', [BookController::class, 'importBooks']);
+    Route::get('/admin/export/books', [BookController::class, 'exportAllBooks']);
+   
 
     // Borrowing Management routes
 
@@ -52,5 +55,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('admin/borrowings', [BorrowController::class, 'index']);
     Route::get('admin/book/{uuid}/borrowings', [BorrowController::class, 'bookBorrower'])->middleware('check_valid_uuid');
     Route::get('admin/overdue', [BorrowController::class, 'overdueBooks']);
+    ROute::get('admin/returned/books', [BorrowController::class, 'allReturnedBooks']);
 
 });

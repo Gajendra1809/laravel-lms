@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Services\UserService;
 use App\Traits\JsonResponseTrait;
 use App\Models\User;
+use App\Services\LoggingService;
 
 /**
  * Controller for the User model.
@@ -26,7 +27,8 @@ class UserController extends Controller
      * @param UserService $userService The user service dependency.
      */
     public function __construct(
-     protected UserService $userService
+     protected UserService $userService,
+     protected LoggingService $logService
     ){
     }
 
@@ -35,13 +37,14 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function index()
+    protected function index(Request $request)
     {
         try {
             $this->authorize('view', User::class);
             $data = $this->userService->all();
             return $this->successResponse($data, 'Users retrieved successfully', 200);
         } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse($th->getMessage());
         }
     }
@@ -59,6 +62,7 @@ class UserController extends Controller
             $response = $this->userService->create($data);
             return $this->successResponse($response, 'User created successfully', 201);
         } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse('User not created',$th->getMessage(), 500);
         }
     }
@@ -70,7 +74,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function show(string $uuid)
+    protected function show(Request $request, string $uuid)
     {
         try {
             $this->authorize('view', User::class);
@@ -80,6 +84,7 @@ class UserController extends Controller
             }
             return $this->successResponse($data, 'User retrieved successfully', 200);
         } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse('User not retrieved', $th->getMessage(), 500);
         }
     }
@@ -103,6 +108,7 @@ class UserController extends Controller
             }
             return $this->successResponse($response, 'User updated successfully', 200);
         } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse('User not updated', $th->getMessage(), 500);
         }
     }
@@ -114,7 +120,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function destroy(string $uuid)
+    protected function destroy(Request $request, string $uuid)
     {
         try {
             $this->authorize('cud', User::class);
@@ -124,6 +130,7 @@ class UserController extends Controller
             }
             return $this->successResponse($response, 'User deleted successfully', 200);
         } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse('User not deleted', $th->getMessage(), 500);
         }
     }
@@ -141,6 +148,7 @@ class UserController extends Controller
             $data = $this->userService->search($request->search);
             return $this->successResponse($data, 'Users retrieved successfully', 200);
         } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse('Something went wrong', $th->getMessage(), 500);
         }
     }

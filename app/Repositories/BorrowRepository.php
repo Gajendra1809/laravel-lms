@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Borrow;
 
 /**
- * Repository for the User model.
+ * Repository for the Borrow model.
  *
  * @package App\Repositories
  *
@@ -15,7 +15,7 @@ class BorrowRepository extends BaseRepository
     /**
      * Constructor to bind model to repo
      *
-     * @param User $user User model
+     * @param Borrow $borrow Borrow model
      */
     public function __construct(Borrow $borrow)
     {

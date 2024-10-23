@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  *
@@ -89,6 +90,15 @@ class BaseRepository
             $query = $query->with($relations);
         }
         return $singleResult ? $query->first() : $query->get();
+    }
+
+    public function exportAll($exportObj, $fileName){
+        return Excel::download($exportObj, $fileName);
+    }
+
+    public function importData($importObj, $fileName){
+        Excel::import($importObj, $fileName);
+        return true;
     }
 
 }
