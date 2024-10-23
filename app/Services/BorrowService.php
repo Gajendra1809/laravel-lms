@@ -7,18 +7,37 @@ use App\Enums\StatusEnum;
 
 class BorrowService
 {
+    /**
+     * Constructs a new instance of the BorrowService, injecting
+     * the required BorrowRepository and BookService via the constructor.
+     *
+     * @param BorrowRepository $borrowRepository The borrow repository to be used.
+     * @param BookService $bookService The book service to be used.
+     */
     public function __construct(
         protected BorrowRepository $borrowRepository,
         protected BookService $bookService
     ){
     }
 
+    /**
+     * Retrieves all current book borrowings.
+     *
+     * @return \Illuminate\Support\Collection The collection of current borrow records.
+     */
     public function allCurrentBorrows(){
         $conditions = ['return_date' => null];
         $relations = ['user', 'book'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
+    /**
+     * Borrows a book, given the uuid of the book.
+     *
+     * @param string $uuid The uuid of the book to borrow.
+     *
+     * @return array The response array
+     */
     public function borrow(string $uuid){
         $book = $this->bookService->getBook($uuid);
         if(!$book) {
@@ -48,12 +67,24 @@ class BorrowService
         return $response;
     }
 
+    /**
+     * Retrieves the books borrowed by the user.
+     *
+     * @return array The response array containing the data of books borrowed by the user
+     */
     public function borrowsByUser(){
         $conditions = ['user_id' => auth()->user()->id, 'return_date' => null];
         $relations = ['book'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
+    /**
+     * Retrieves the current borrower of the book specified by the uuid.
+     *
+     * @param string $uuid The uuid of the book
+     *
+     * @return array The response array containing the data of the current borrower
+     */
     public function bookBorrower(string $uuid){
         $book = $this->bookService->getBook($uuid);
         if(!$book) {
@@ -73,6 +104,13 @@ class BorrowService
         return $response;
     }
 
+    /**
+     * Returning a book.
+     *
+     * @param string $uuid The uuid of the borrow record
+     *
+     * @return array The response array containing the data of the returned book
+     */
     public function returnBook(string $uuid){
         $borrowRecord = $this->borrowRepository->findByUuid($uuid);
         if(!$borrowRecord) {
@@ -99,12 +137,22 @@ class BorrowService
         return $response;
     }
 
+    /**
+     * Retrieves all overdue books.
+     *
+     * @return \Illuminate\Support\Collection The collection of overdue borrow records, including the user and book relations.
+     */
     public function overdueBooks(){
         $conditions = ['due_date' => ['<', now()], 'return_date' => null];
         $relations = ['user', 'book'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
+    /**
+     * Retrieves all the books that have been returned.
+     *
+     * @return \Illuminate\Support\Collection The collection of returned borrow records, including the user and book relations.
+     */
     public function allReturnedBooks(){
         $conditions = ['return_date' => ['<>', null]];
         $relations = ['user', 'book'];

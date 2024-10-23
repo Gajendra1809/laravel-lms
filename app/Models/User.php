@@ -93,6 +93,11 @@ class User extends Authenticatable
             ->get();
     }
 
+    /**
+     * The books that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function books()
     {
         return $this->hasMany(Book::class, 'admin_id', 'id');

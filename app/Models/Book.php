@@ -37,6 +37,12 @@ class Book extends Model
         );
     }
 
+    /**
+     * Return the available status as a string.
+     *
+     * @param int $value
+     * @return string
+     */
     public function getAvailableAttribute($value){
         if($value == StatusEnum::AVAILABLE->value){
             return StatusEnum::AVAILABLE->label();
@@ -45,12 +51,26 @@ class Book extends Model
         }
     }
 
+    /**
+     * Searches for books based on a query data.
+     *
+     * This function utilizes PostgreSQL's full-text search capabilities.
+     *
+     * @param string $query The search query to search for.
+     *
+     * @return \Illuminate\Support\Collection A collection of books that matches the query.
+     */
     public static function search($query)
     {
         return self::whereRaw("to_tsvector('english', title || ' ' || author || ' ' || isbn || ' ' || available) @@ plainto_tsquery('english', ?)", [$query])
             ->get();
     }
 
+    /**
+     * Returns the admin who created the book.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id', 'id');

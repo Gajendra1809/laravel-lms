@@ -8,14 +8,24 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class BooksExport implements FromCollection, WithHeadings
 {
+    
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * Returns a collection of books.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection<\App\Models\Book>
+     */
     public function collection()
     {
         return Book::all();
     }
 
+    /**
+     * Define the headings for the export.
+     *
+     * The headings are the field names for the export.
+     *
+     * @return array The headings for the export.
+     */
     public function headings(): array
     {
         return [

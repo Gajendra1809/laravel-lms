@@ -24,6 +24,11 @@ class BookCreateRequest extends BaseRequest
         ];
     }
 
+    /**
+     * Return the error messages for the request.
+     *
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [

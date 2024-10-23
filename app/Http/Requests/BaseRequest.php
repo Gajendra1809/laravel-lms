@@ -14,13 +14,19 @@ class BaseRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Configure the validator instance.
+     * If there are extra fields, fail the validation with a custom message
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
     public function withValidator($validator)
     {
         $input = $this->all();
         $allowedFields = array_keys($this->rules());
         $extraFields = array_diff(array_keys($input), $allowedFields);
 
-        // If there are extra fields, fail the validation with a custom message
         if (count($extraFields) > 0) {
             $validator->after(function ($validator) use ($extraFields) {
                 foreach ($extraFields as $extraField) {

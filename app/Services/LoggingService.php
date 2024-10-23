@@ -36,6 +36,6 @@ class LoggingService
         }elseif(!is_array($context)) {
             $context = [$context];
         }
-        $this->logInfo('error', $message, $context);
+        Log::channel('error')->error($message, $context);
     }
 }
