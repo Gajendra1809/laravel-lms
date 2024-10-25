@@ -49,13 +49,6 @@ class UserService
      * @return \Illuminate\Support\Collection
      */
     public function search($query){
-        if($query == "admin"){
-            $query = UserRoleEnum::ADMIN->value;
-        }elseif($query == "user"){
-            $query = UserRoleEnum::USER->value;
-        }elseif($query == "superadmin"){
-            $query = UserRoleEnum::SUPERADMIN->value;
-        }
         return $this->userRepository->search($query);
     }
 

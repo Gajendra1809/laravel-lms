@@ -10,6 +10,8 @@ class Borrow extends Model
 {
     use HasFactory;
 
+    protected $table = 'borrows';
+
     protected $fillable = [
         'user_id',
         'book_id',

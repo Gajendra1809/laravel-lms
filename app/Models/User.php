@@ -9,10 +9,13 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Str;
 use App\Enums\UserRoleEnum;
+use Laravel\Scout\Searchable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, Searchable;
+
+    protected $table = 'users';
 
     /**
      * The attributes that are mass assignable.
@@ -79,18 +82,17 @@ class User extends Authenticatable
     }
 
     /**
-     * Search for users by name, email, or role.
+     * Get the indexable data array for the model.
      *
-     * This function utilizes PostgreSQL's full-text search capabilities.
-     *
-     * @param string $query The search query to search for.
-     *
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
-    public static function search($query)
+    public function toSearchableArray()
     {
-        return self::whereRaw("to_tsvector('english', name || ' ' || email || ' ' || role) @@ plainto_tsquery('english', ?)", [$query])
-            ->get();
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'role' => $this->role
+        ];
     }
 
     /**

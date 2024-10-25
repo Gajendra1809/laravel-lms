@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Enums\StatusEnum;
+use Laravel\Scout\Searchable;
 
 class Book extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Searchable;
+
+    protected $table = 'books';
 
     protected $fillable = [
         'title',
@@ -51,19 +54,19 @@ class Book extends Model
         }
     }
 
-    /**
-     * Searches for books based on a query data.
+     /**
+     * Get the indexable data array for the model.
      *
-     * This function utilizes PostgreSQL's full-text search capabilities.
-     *
-     * @param string $query The search query to search for.
-     *
-     * @return \Illuminate\Support\Collection A collection of books that matches the query.
+     * @return array
      */
-    public static function search($query)
+    public function toSearchableArray()
     {
-        return self::whereRaw("to_tsvector('english', title || ' ' || author || ' ' || isbn || ' ' || available) @@ plainto_tsquery('english', ?)", [$query])
-            ->get();
+        return [
+            'title' => $this->title,
+            'author' => $this->author,
+            'isbn' => $this->isbn,
+            'available' => $this->available
+        ];
     }
 
     /**

@@ -34,6 +34,10 @@ trait JsonResponseTrait
      */
     public function errorResponse($message = 'error', $error=null, $statusCode = 500): JsonResponse
     {
+        if($error=="This action is unauthorized."){
+            $message = "You do not have permission to perform this action";
+            $statusCode = 401;
+        }
         return response()->json([
             'success' => false,
             'message' => $message,

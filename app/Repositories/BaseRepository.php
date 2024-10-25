@@ -73,7 +73,7 @@ class BaseRepository
     // Search or filter records
     public function search($query)
     {
-        return $this->model->search($query);
+        return $this->model::search($query)->get();
     }
 
     public function findWithConditions(array $conditions = [], array $relations = [], bool $singleResult = false)
