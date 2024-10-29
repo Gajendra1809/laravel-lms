@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\v1\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('borrow/{id}/pay-late-fee', [PaymentController::class, 'showPaymentForm'])->name('payment.form');
+Route::get('/create-checkout-session/{borrow}', [PaymentController::class, 'createCheckoutSession'])->name('checkout.session');
+
+Route::get('/payment-success', function () {
+    return 'Payment Successful';
+})->name('payment.success');
+
+Route::get('/payment-cancel', function () {
+    return 'Payment Canceled';
+})->name('payment.cancel');
+
+

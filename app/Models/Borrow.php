@@ -19,6 +19,7 @@ class Borrow extends Model
         'due_date',
         'return_date',
         'uuid',
+        'late_fee'
     ];
 
     /**

@@ -30,7 +30,7 @@ class BaseRequest extends FormRequest
         if (count($extraFields) > 0) {
             $validator->after(function ($validator) use ($extraFields) {
                 foreach ($extraFields as $extraField) {
-                    $validator->errors()->add($extraField, 'This field does not exist.');
+                    $validator->errors()->add($extraField, 'This field does not exist or is not allowed');
                 }
             });
         }
