@@ -22,11 +22,11 @@ Route::get('borrow/{id}/pay-late-fee', [PaymentController::class, 'showPaymentFo
 Route::get('/create-checkout-session/{borrow}', [PaymentController::class, 'createCheckoutSession'])->name('checkout.session');
 
 Route::get('/payment-success', function () {
-    return 'Payment Successful';
+    return 'Payment Successful, book returned to library';
 })->name('payment.success');
 
 Route::get('/payment-cancel', function () {
-    return 'Payment Canceled';
+    return 'Payment Canceled, book not returned to library';
 })->name('payment.cancel');
 
 

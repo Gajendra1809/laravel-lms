@@ -30,7 +30,7 @@ class OverdueBookLateFee extends Notification implements ShouldQueue
                     ->greeting('Hello ' . $notifiable->name)
                     ->line('This is a reminder that your borrowed book "' . $this->borrow->book->title . '" is not returned on time.')
                     ->line('Please pay the late fee of Rs."' . $this->borrow->late_fee . '" to avoid any inconvenience.')
-                    ->action('Pay here', route('payment.form', ['id' => $this->borrow->id]))
+                    ->action('View Borrowed Books', url('http://127.0.0.1:8000/borrow/' . $this->borrow->id . '/pay-late-fee'))
                     ->line('Thank you for using our library!');
     }
 

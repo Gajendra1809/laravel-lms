@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('apps:notify-due-date')->daily();
         $schedule->command('apps:notify-overdue-books')->monthly();
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
     }
 
     /**

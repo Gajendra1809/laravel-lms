@@ -56,5 +56,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('admin/book/{uuid}/borrowings', [BorrowController::class, 'bookBorrower'])->middleware('check_valid_uuid');
     Route::get('admin/overdue', [BorrowController::class, 'overdueBooks']);
     ROute::get('admin/returned/books', [BorrowController::class, 'allReturnedBooks']);
+    Route::get('admin/borrowHistory/{uuid}/user', [BorrowController::class, 'borrowHistoryByUser'])->middleware('check_valid_uuid');
+    Route::get('admin/borrowHistory/{uuid}/book', [BorrowController::class, 'borrowHistoryByBook'])->middleware('check_valid_uuid');
+    Route::get('admin/returnHistory/{uuid}/book', [BorrowController::class, 'returnHistoryByBook'])->middleware('check_valid_uuid');
 
 });

@@ -155,4 +155,34 @@ class BorrowController extends Controller
             return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
         }
     }
+
+    public function borrowHistoryByUser(String $uuid){
+        try {
+            $data = $this->borrowService->borrowHistoryByUser($uuid);
+            return $this->successResponse($data, 'Borrow history by User retrieved successfully', 200);
+        } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), null);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
+        }
+    }
+
+    public function borrowHistoryByBook(String $uuid){
+        try {
+            $data = $this->borrowService->borrowHistoryByBook($uuid);
+            return $this->successResponse($data, 'Borrow history by Book retrieved successfully', 200);
+        } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), null);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
+        }
+    }
+
+    public function returnHistoryByBook(String $uuid){
+        try {
+            $data = $this->borrowService->returnHistoryByBook($uuid);
+            return $this->successResponse($data, 'Return history by Book retrieved successfully', 200);
+        } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), null);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
+        }
+    }
 }

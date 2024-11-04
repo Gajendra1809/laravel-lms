@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\BorrowRepository;
 use App\Enums\StatusEnum;
+use App\Models\User;
 
 class BorrowService
 {
@@ -16,7 +17,8 @@ class BorrowService
      */
     public function __construct(
         protected BorrowRepository $borrowRepository,
-        protected BookService $bookService
+        protected BookService $bookService,
+        protected UserService $userService
     ){
     }
 
@@ -169,4 +171,26 @@ class BorrowService
         $relations = ['user', 'book'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
+
+    public function borrowHistoryByUser(String $uuid){
+        $user = $this->userService->getUser($uuid);
+        $conditions = ['user_id' => $user->id];
+        $relations = ['book'];
+        return $this->borrowRepository->findWithConditions($conditions, $relations);
+    }
+
+    public function borrowHistoryByBook(String $uuid){
+        $book = $this->bookService->getBook($uuid);
+        $conditions = ['book_id' => $book->id];
+        $relations = ['user'];
+        return $this->borrowRepository->findWithConditions($conditions, $relations);
+    }
+
+    public function returnHistoryByBook(String $uuid){
+        $book = $this->bookService->getBook($uuid);
+        $conditions = ['book_id' => $book->id, 'return_date' => ['<>', null]];
+        $relations = ['user'];
+        return $this->borrowRepository->findWithConditions($conditions, $relations);
+    }
+    
 }

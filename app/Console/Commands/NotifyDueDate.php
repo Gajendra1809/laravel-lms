@@ -29,7 +29,10 @@ class NotifyDueDate extends Command
     public function handle()
     {
         $dueTomorrow = now()->addDay();
-        $borrows = Borrow::where('due_date', $dueTomorrow)->with('user', 'book')->get();
+        $borrows = Borrow::where([
+                        ['due_date', '=', $dueTomorrow],
+                        ['return_date', null]
+                    ])->with('user', 'book')->get();
 
         foreach ($borrows as $borrow) {
             $user = $borrow->user;
