@@ -23,11 +23,11 @@ class BaseRepository
     }
 
     // Fetch all records
-    public function all()
+    public function all($perPage = 10)
     {
-        return $this->model->all();
+        return $this->model->paginate($perPage);
     }
-
+    
     // Fetch a record by ID
     public function find($id)
     {

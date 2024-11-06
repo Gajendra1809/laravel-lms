@@ -44,6 +44,7 @@ class BorrowService
         $book = $this->bookService->getBook($uuid);
         /** @var \App\Models\User $user */
         $user = auth()->user();
+        $book = \App\Models\Book::where('id', $book->id)->lockForUpdate()->first();
         if(!$book) {
             $response['success']  = false;
             $response['msg']      = 'Book not found';
@@ -61,10 +62,10 @@ class BorrowService
             $response['data']     = null;
         }else{
             $borrowData = [
-                'book_id' => $book->id,
-                'user_id' => $user->id,
+                'book_id'     => $book->id,
+                'user_id'     => $user->id,
                 'borrow_date' => now(),
-                'due_date' => now()->addDays(14),
+                'due_date'    => now()->addDays(14),
             ];
             $borrow = $this->borrowRepository->create($borrowData);
             $book->update(['available' => StatusEnum::NOTAVAILABLE->value]);

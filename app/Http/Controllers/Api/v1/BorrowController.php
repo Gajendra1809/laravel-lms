@@ -7,6 +7,7 @@ use App\Services\BorrowService;
 use App\Services\LoggingService;
 use App\Traits\JsonResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BorrowController extends Controller
 {
@@ -49,14 +50,17 @@ class BorrowController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function borrow(Request $request, string $uuid){
+        DB::beginTransaction();
         try {
             $response = $this->borrowService->borrow($uuid);
             if(!$response['success']) {
                 return $this->errorResponse('Book not borrowed', $response['msg'], $response['status']);
             }
+            DB::commit();
             $this->logService->logInfo('borrowing', 'Book borrowed', $response['data']);
             return $this->successResponse($response['data'], $response['msg'], $response['status']);
         } catch (\Throwable $th) {
+            DB::rollBack();
             $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
         }
@@ -109,14 +113,17 @@ class BorrowController extends Controller
      * @return \Illuminate\Http\JsonResponse The JSON response containing the data of the returned book
      */
     public function returnBook(Request $request, string $uuid){
+        DB::beginTransaction();
         try {
             $response = $this->borrowService->returnBook($uuid);
             if(!$response['success']) {
                 return $this->errorResponse('Book not returned', $response['msg'], $response['status']);
             }
+            DB::commit();
             $this->logService->logInfo('borrowing', 'Book returned', $response['data']);
             return $this->successResponse($response['data'], $response['msg'], $response['status']);
         } catch (\Throwable $th) {
+            DB::rollBack();
             $this->logService->logError($th->getMessage(), $request->all());
             return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
         }
