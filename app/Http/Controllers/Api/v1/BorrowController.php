@@ -163,6 +163,13 @@ class BorrowController extends Controller
         }
     }
 
+    /**
+     * Retrieves the borrowing history of a user.
+     *
+     * @param string $uuid The UUID of the user whose borrowing history is to be retrieved.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function borrowHistoryByUser(String $uuid){
         try {
             $data = $this->borrowService->borrowHistoryByUser($uuid);
@@ -173,6 +180,13 @@ class BorrowController extends Controller
         }
     }
 
+    /**
+     * Retrieves the borrowing history of a book.
+     *
+     * @param string $uuid The UUID of the book whose borrowing history is to be retrieved.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function borrowHistoryByBook(String $uuid){
         try {
             $data = $this->borrowService->borrowHistoryByBook($uuid);
@@ -183,6 +197,13 @@ class BorrowController extends Controller
         }
     }
 
+    /**
+     * Retrieves the return history of a book.
+     *
+     * @param string $uuid The UUID of the book whose return history is to be retrieved.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function returnHistoryByBook(String $uuid){
         try {
             $data = $this->borrowService->returnHistoryByBook($uuid);

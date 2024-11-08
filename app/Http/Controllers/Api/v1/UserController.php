@@ -45,7 +45,7 @@ class UserController extends Controller
             return $this->successResponse($data, 'Users retrieved successfully', 200);
         } catch (\Throwable $th) {
             $this->logService->logError($th->getMessage(), $request->all());
-            return $this->errorResponse($th->getMessage());
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage());
         }
     }
 
@@ -63,7 +63,7 @@ class UserController extends Controller
             return $this->successResponse($response, 'User created successfully', 201);
         } catch (\Throwable $th) {
             $this->logService->logError($th->getMessage(), $request->all());
-            return $this->errorResponse('User not created',$th->getMessage(), 500);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage());
         }
     }
 
@@ -85,7 +85,7 @@ class UserController extends Controller
             return $this->successResponse($data, 'User retrieved successfully', 200);
         } catch (\Throwable $th) {
             $this->logService->logError($th->getMessage(), $request->all());
-            return $this->errorResponse('User not retrieved', $th->getMessage(), 500);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage());
         }
     }
 
@@ -109,7 +109,7 @@ class UserController extends Controller
             return $this->successResponse($response, 'User updated successfully', 200);
         } catch (\Throwable $th) {
             $this->logService->logError($th->getMessage(), $request->all());
-            return $this->errorResponse('User not updated', $th->getMessage(), 500);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage());
         }
     }
 
@@ -131,7 +131,7 @@ class UserController extends Controller
             return $this->successResponse($response, 'User deleted successfully', 200);
         } catch (\Throwable $th) {
             $this->logService->logError($th->getMessage(), $request->all());
-            return $this->errorResponse('User not deleted', $th->getMessage(), 500);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage());
         }
     }
 
@@ -149,7 +149,7 @@ class UserController extends Controller
             return $this->successResponse($data, 'Users retrieved successfully', 200);
         } catch (\Throwable $th) {
             $this->logService->logError($th->getMessage(), $request->all());
-            return $this->errorResponse('Something went wrong', $th->getMessage(), 500);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage());
         }
     }
 

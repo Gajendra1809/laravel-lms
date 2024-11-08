@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\BorrowRepository;
 use App\Enums\StatusEnum;
 use App\Models\User;
+use App\Repositories\BookRepository;
 
 class BorrowService
 {
@@ -17,6 +18,7 @@ class BorrowService
      */
     public function __construct(
         protected BorrowRepository $borrowRepository,
+        protected BookRepository $bookRepository,
         protected BookService $bookService,
         protected UserService $userService
     ){
@@ -29,7 +31,7 @@ class BorrowService
      */
     public function allCurrentBorrows(){
         $conditions = ['return_date' => null];
-        $relations  = ['user', 'book'];
+        $relations  = ['user:id,uuid,name', 'book:id,uuid,isbn,title'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
@@ -41,10 +43,9 @@ class BorrowService
      * @return array The response array
      */
     public function borrow(string $uuid){
-        $book = $this->bookService->getBook($uuid);
         /** @var \App\Models\User $user */
         $user = auth()->user();
-        $book = \App\Models\Book::where('id', $book->id)->lockForUpdate()->first();
+        $book = $this->bookRepository->getBookandLock($uuid);
         if(!$book) {
             $response['success']  = false;
             $response['msg']      = 'Book not found';
@@ -85,7 +86,7 @@ class BorrowService
      */
     public function borrowsByUser(){
         $conditions = ['user_id' => auth()->user()->id, 'return_date' => null];
-        $relations = ['book'];
+        $relations = ['book:id,uuid,title,isbn'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
@@ -158,7 +159,7 @@ class BorrowService
      */
     public function overdueBooks(){
         $conditions = ['due_date' => ['<', now()], 'return_date' => null];
-        $relations = ['user', 'book'];
+        $relations = ['user:id,uuid,name', 'book:id,uuid,isbn,title'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
@@ -169,28 +170,49 @@ class BorrowService
      */
     public function allReturnedBooks(){
         $conditions = ['return_date' => ['<>', null]];
-        $relations = ['user', 'book'];
+        $relations = ['user:id,uuid,name', 'book:id,uuid,isbn,title'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
+    /**
+     * Retrieves the borrowing history of a user.
+     *
+     * @param string $uuid The UUID of the user whose borrowing history is to be retrieved.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function borrowHistoryByUser(String $uuid){
         $user = $this->userService->getUser($uuid);
         $conditions = ['user_id' => $user->id];
-        $relations = ['book'];
+        $relations = ['book:id,uuid,isbn,title'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
+    /**
+     * Retrieves the borrowing history of a book.
+     *
+     * @param string $uuid The UUID of the book whose borrowing history is to be retrieved.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function borrowHistoryByBook(String $uuid){
         $book = $this->bookService->getBook($uuid);
         $conditions = ['book_id' => $book->id];
-        $relations = ['user'];
+        $relations = ['user:id,uuid,name'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
+    /**
+     * Retrieves the return history of a book.
+     *
+     * @param string $uuid The UUID of the book whose return history is to be retrieved.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function returnHistoryByBook(String $uuid){
         $book = $this->bookService->getBook($uuid);
         $conditions = ['book_id' => $book->id, 'return_date' => ['<>', null]];
-        $relations = ['user'];
+        $relations = ['user:id,uuid,name'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
     
