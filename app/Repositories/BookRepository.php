@@ -32,4 +32,12 @@ class BookRepository extends BaseRepository
         return $this->model->where('uuid', $uuid)->lockForUpdate()->first();
     }
 
+    public function mostBorrowedBooks(){
+        return $this->model::select('id', 'title', 'isbn')
+        ->withCount('borrows')
+        ->orderByDesc('borrows_count')
+        ->limit(5)
+        ->get();
+    }
+
 }

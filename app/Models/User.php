@@ -10,10 +10,11 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Str;
 use App\Enums\UserRoleEnum;
 use Laravel\Scout\Searchable;
+use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, Searchable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, Searchable, Billable;
 
     protected $table = 'users';
 

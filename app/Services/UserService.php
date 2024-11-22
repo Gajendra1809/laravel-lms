@@ -5,9 +5,11 @@ namespace App\Services;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use App\Enums\UserRoleEnum;
+use App\Models\Borrow;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PasswordReset;
 use App\Models\User;
+use App\Repositories\BorrowRepository;
 use Illuminate\Support\Carbon;
 
 /**
@@ -28,7 +30,8 @@ class UserService
      * @param UserRepository $userRepository The user repository to be used.
      */
     public function __construct(
-        protected UserRepository $userRepository
+        protected UserRepository $userRepository,
+        protected BorrowRepository $borrowRepository
     ){
     }
 
@@ -179,5 +182,9 @@ class UserService
         $user->save();
         PasswordReset::where('email', $request->email)->delete();
         return true;
+    }
+
+    public function weeklyActiveUsers(){
+        return $this->borrowRepository->weeklyActiveUsers();
     }
 }

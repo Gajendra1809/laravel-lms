@@ -60,4 +60,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('admin/borrowHistory/{uuid}/book', [BorrowController::class, 'borrowHistoryByBook'])->middleware('check_valid_uuid');
     Route::get('admin/returnHistory/{uuid}/book', [BorrowController::class, 'returnHistoryByBook'])->middleware('check_valid_uuid');
 
+    
+
 });
+
+    Route::get('graph/most-borrowed-books', [BorrowController::class, 'mostBorrowed']);
+    Route::get('graph/books-status', [BorrowController::class, 'booksAvailabilityCount']);
+    Route::get('graph/weekly-active-borrowers', [UserController::class, 'weeklyActiveUsers']);
+    Route::get('graph/longest-borrowed-books', [BorrowController::class, 'longestBorrowed']);

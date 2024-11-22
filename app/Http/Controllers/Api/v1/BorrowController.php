@@ -213,4 +213,34 @@ class BorrowController extends Controller
             return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
         }
     }
+
+    public function mostBorrowed(){
+        try {
+            $response = $this->borrowService->mostBorrowedBooks();
+            return $this->successResponse($response, 'Most borrowed books retrieved successfully', 200);
+        } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), null);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
+        }
+    }
+
+    public function booksAvailabilityCount(){
+        try {
+            $response = $this->borrowService->booksAvailabilityCount();
+            return $this->successResponse($response, 'Books status retrieved successfully', 200);
+        } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), null);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
+        }
+    }
+
+    public function longestBorrowed(){
+        try {
+            $response = $this->borrowService->longestBorrowedBooks();
+            return $this->successResponse($response, 'Longest borrowed books retrieved successfully', 200);
+        } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), null);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
+        }
+    }
 }

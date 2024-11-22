@@ -153,5 +153,15 @@ class UserController extends Controller
         }
     }
 
+    protected function weeklyActiveUsers(){
+        try {
+            $response = $this->userService->weeklyActiveUsers();
+            return $this->successResponse($response, 'Weekly active users retrieved successfully', 200);
+        } catch (\Throwable $th) {
+            $this->logService->logError($th->getMessage(), null);
+            return $this->errorResponse(config('msg.errors.something_wrong'), $th->getMessage(), 500);
+        }
+    }
+
     
 }

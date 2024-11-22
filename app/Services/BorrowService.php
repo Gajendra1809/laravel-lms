@@ -215,5 +215,21 @@ class BorrowService
         $relations = ['user:id,uuid,name'];
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
+
+    public function mostBorrowedBooks(){
+        return $this->bookRepository->mostBorrowedBooks();
+    }
+
+    public function booksAvailabilityCount(){
+        $conditions = ['available' => StatusEnum::AVAILABLE->value];
+        $response['available'] = $this->bookRepository->findWithConditions($conditions)->count();
+        $conditions = ['available' => StatusEnum::NOTAVAILABLE->value];
+        $response['not_available'] = $this->bookRepository->findWithConditions($conditions)->count();
+        return $response;
+    }
+    
+    public function longestBorrowedBooks(){
+        return $this->borrowRepository->longestBorrowedBooks();
+    }
     
 }

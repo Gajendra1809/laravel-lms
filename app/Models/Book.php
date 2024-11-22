@@ -79,4 +79,8 @@ class Book extends Model
         return $this->belongsTo(User::class, 'admin_id', 'id');
     }
 
+    public function borrows(){
+        return $this->hasMany(Borrow::class, 'book_id', 'id');
+    }
+
 }
