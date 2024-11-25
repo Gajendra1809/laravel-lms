@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\v1\UserController;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\BookController;
 use App\Http\Controllers\Api\v1\BorrowController;
+use App\Http\Controllers\Api\v1\PaymentController;
+use Faker\Provider\ar_EG\Payment;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +25,13 @@ Route::post('/users/login', [AuthController::class, 'login']);
 Route::post('forget-password/request-token', [AuthController::class, 'requestToken']);
 Route::post('forget-password/reset', [AuthController::class, 'resetPassword']);
 
-Route::group(['middleware' => 'auth:api'], function () {
+
+
+// User Subscription routes
+Route::post('/subscribe', [PaymentController::class, 'showSubscriptionForm'])->middleware('auth:api');
+Route::post('/subscription/payment', [PaymentController::class, 'createSubscription'])->middleware('auth:api');
+
+Route::middleware(['auth:api', 'check_subscription'])->group(function () {
 
     // User Management routes
     Route::post('/users/search', [UserController::class, 'search']);
@@ -60,11 +68,11 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('admin/borrowHistory/{uuid}/book', [BorrowController::class, 'borrowHistoryByBook'])->middleware('check_valid_uuid');
     Route::get('admin/returnHistory/{uuid}/book', [BorrowController::class, 'returnHistoryByBook'])->middleware('check_valid_uuid');
 
-    
-
 });
 
     Route::get('graph/most-borrowed-books', [BorrowController::class, 'mostBorrowed']);
     Route::get('graph/books-status', [BorrowController::class, 'booksAvailabilityCount']);
     Route::get('graph/weekly-active-borrowers', [UserController::class, 'weeklyActiveUsers']);
     Route::get('graph/longest-borrowed-books', [BorrowController::class, 'longestBorrowed']);
+
+

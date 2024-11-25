@@ -18,7 +18,12 @@ use Illuminate\Support\Facades\Log;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
+})->name('login');
+
+
+Route::get('/subscribeform/{intent}', function (string $intent) {
+    return view('payment.subscription', ['intent' => $intent]);
 });
 
 Route::get('borrow/{id}/pay-late-fee', [PaymentController::class, 'showPaymentForm'])->name('payment.form');
