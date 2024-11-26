@@ -7,6 +7,8 @@ use App\Policies\UserPolicy;
 use App\Policies\BookPolicy;
 use App\Models\User;
 use App\Models\Book;
+use App\Models\Borrow;
+use App\Policies\BorrowPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -17,7 +19,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         User::class => UserPolicy::class,
-        Book::class => BookPolicy::class
+        Book::class => BookPolicy::class,
+        Borrow::class => BorrowPolicy::class
     ];
 
     /**

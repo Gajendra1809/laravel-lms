@@ -216,8 +216,8 @@ class BorrowService
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
-    public function mostBorrowedBooks(){
-        return $this->bookRepository->mostBorrowedBooks();
+    public function mostBorrowedBooks($limit){
+        return $this->bookRepository->mostBorrowedBooks($limit);
     }
 
     public function booksAvailabilityCount(){

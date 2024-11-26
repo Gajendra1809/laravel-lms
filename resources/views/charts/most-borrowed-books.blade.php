@@ -1,9 +1,28 @@
 
     <div style="height: 400px; width: 800px">
-        <canvas id="mostBorrowedBooksChart" ></canvas>
+        <label for="limit">Get top : </label>
+        <select name="limit" id="limit">
+            <option value="2">2</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+        </select>
+        <div id="chartContainer">
+            <canvas id="mostBorrowedBooksChart"></canvas>
+        </div>
     </div>
     <script>
-        fetch('http://127.0.0.1:8000/api/graph/most-borrowed-books', {
+        document.getElementById('limit').addEventListener('change', function() {
+            const limit = this.value;
+            document.getElementById('mostBorrowedBooksChart').remove();
+            const chartContainer = document.getElementById('chartContainer');
+            const newCanvas = document.createElement('canvas');
+            newCanvas.id = 'mostBorrowedBooksChart';
+            chartContainer.appendChild(newCanvas);
+            apiCall(limit);
+        })
+        const apiCall = async (limit) => {
+            fetch('http://127.0.0.1:8000/api/graph/most-borrowed-books/'+limit, {
             method: 'GET'
         })
             .then(response => response.json())
@@ -64,4 +83,6 @@
                 }
             })
             .catch(error => console.error('Error:', error));
+        }
+        document.addEventListener('DOMContentLoaded', apiCall(2));
     </script>

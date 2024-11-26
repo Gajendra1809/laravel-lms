@@ -70,7 +70,7 @@ Route::middleware(['auth:api', 'check_subscription'])->group(function () {
 
 });
 
-    Route::get('graph/most-borrowed-books', [BorrowController::class, 'mostBorrowed']);
+    Route::get('graph/most-borrowed-books/{limit}', [BorrowController::class, 'mostBorrowed']);
     Route::get('graph/books-status', [BorrowController::class, 'booksAvailabilityCount']);
     Route::get('graph/weekly-active-borrowers', [UserController::class, 'weeklyActiveUsers']);
     Route::get('graph/longest-borrowed-books', [BorrowController::class, 'longestBorrowed']);

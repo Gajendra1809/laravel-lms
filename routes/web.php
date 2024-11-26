@@ -40,7 +40,6 @@ Route::get('/payment-cancel', function () {
 Route::get('/admin/dashboard', function () {
     return view('dashboard');
 })->name('admin.dashboard');
-
 // Route::get('/checkout', function (Request $request) {
 //     $stripePriceId = 'price_1QKd91BdsatuffklMo6SoDQd';
  

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Borrow;
 use App\Services\BorrowService;
 use App\Services\LoggingService;
 use App\Traits\JsonResponseTrait;
@@ -22,7 +23,8 @@ class BorrowController extends Controller
      */
     public function __construct(
         protected BorrowService $borrowService,
-        protected LoggingService $logService
+        protected LoggingService $logService,
+        protected Borrow $borrowModel
     ){
     }
 
@@ -34,6 +36,7 @@ class BorrowController extends Controller
      */
     public function index(Request $request){
         try {
+            $this->authorize('view', $this->borrowModel);
             $data = $this->borrowService->allCurrentBorrows();
             return $this->successResponse($data, 'Book borrowings retrieved successfully', 200);
         } catch (\Throwable $th) {
@@ -93,6 +96,7 @@ class BorrowController extends Controller
      */
     public function bookBorrower(Request $request, string $uuid){
         try {
+            $this->authorize('view', $this->borrowModel);
             $response = $this->borrowService->bookBorrower($uuid);
             if(!$response['success']) {
                 return $this->errorResponse('Book not borrowed', $response['msg'], $response['status']);
@@ -138,6 +142,7 @@ class BorrowController extends Controller
      */
     public function overdueBooks(Request $request){
         try {
+            $this->authorize('view', $this->borrowModel);
             $data = $this->borrowService->overdueBooks();
             return $this->successResponse($data, 'Overdue books retrieved successfully', 200);
         } catch (\Throwable $th) {
@@ -155,6 +160,7 @@ class BorrowController extends Controller
      */
     public function allReturnedBooks(Request $request){
         try {
+            $this->authorize('view', $this->borrowModel);
             $data = $this->borrowService->allReturnedBooks();
             return $this->successResponse($data, 'Returned books retrieved successfully', 200);
         } catch (\Throwable $th) {
@@ -172,6 +178,7 @@ class BorrowController extends Controller
      */
     public function borrowHistoryByUser(String $uuid){
         try {
+            $this->authorize('view', $this->borrowModel);
             $data = $this->borrowService->borrowHistoryByUser($uuid);
             return $this->successResponse($data, 'Borrow history by User retrieved successfully', 200);
         } catch (\Throwable $th) {
@@ -189,6 +196,7 @@ class BorrowController extends Controller
      */
     public function borrowHistoryByBook(String $uuid){
         try {
+            $this->authorize('view', $this->borrowModel);
             $data = $this->borrowService->borrowHistoryByBook($uuid);
             return $this->successResponse($data, 'Borrow history by Book retrieved successfully', 200);
         } catch (\Throwable $th) {
@@ -206,6 +214,7 @@ class BorrowController extends Controller
      */
     public function returnHistoryByBook(String $uuid){
         try {
+            $this->authorize('view', $this->borrowModel);
             $data = $this->borrowService->returnHistoryByBook($uuid);
             return $this->successResponse($data, 'Return history by Book retrieved successfully', 200);
         } catch (\Throwable $th) {
@@ -214,9 +223,9 @@ class BorrowController extends Controller
         }
     }
 
-    public function mostBorrowed(){
+    public function mostBorrowed($limit = 5){
         try {
-            $response = $this->borrowService->mostBorrowedBooks();
+            $response = $this->borrowService->mostBorrowedBooks($limit);
             return $this->successResponse($response, 'Most borrowed books retrieved successfully', 200);
         } catch (\Throwable $th) {
             $this->logService->logError($th->getMessage(), null);
