@@ -184,6 +184,11 @@ class UserService
         return true;
     }
 
+    /**
+     * Returns the number of active users on a weekly basis.
+     *
+     * @return array The weekly active users data.
+     */
     public function weeklyActiveUsers(){
         return $this->borrowRepository->weeklyActiveUsers();
     }

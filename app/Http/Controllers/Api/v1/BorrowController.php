@@ -223,6 +223,13 @@ class BorrowController extends Controller
         }
     }
 
+    /**
+     * Retrieves the most borrowed books.
+     *
+     * @param int $limit The number of top borrowed books to retrieve. Default is 5.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function mostBorrowed($limit = 5){
         try {
             $response = $this->borrowService->mostBorrowedBooks($limit);
@@ -233,6 +240,11 @@ class BorrowController extends Controller
         }
     }
 
+    /**
+     * Retrieves the count of books available and not available.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function booksAvailabilityCount(){
         try {
             $response = $this->borrowService->booksAvailabilityCount();
@@ -243,6 +255,11 @@ class BorrowController extends Controller
         }
     }
 
+    /**
+     * Retrieves the books that have been borrowed for the longest time.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function longestBorrowed(){
         try {
             $response = $this->borrowService->longestBorrowedBooks();

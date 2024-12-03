@@ -10,10 +10,8 @@
 
 <script type="text/javascript">
     const stripe = Stripe('{{ config('services.stripe.key') }}');
-
     document.getElementById('checkout-button').addEventListener('click', async (e) => {
     const borrowId = e.target.getAttribute('data-borrow-id');
-
     try {
         const response = await fetch(`/create-checkout-session/${borrowId}`, {
             method: "GET",

@@ -153,6 +153,11 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Retrieve the number of active users on a weekly basis.
+     *
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the weekly active users data.
+     */
     protected function weeklyActiveUsers(){
         try {
             $response = $this->userService->weeklyActiveUsers();

@@ -32,6 +32,13 @@ class BookRepository extends BaseRepository
         return $this->model->where('uuid', $uuid)->lockForUpdate()->first();
     }
 
+    /**
+     * Retrieves the top $limit books that have been borrowed the most.
+     *
+     * @param int $limit The number of top borrowed books to retrieve.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function mostBorrowedBooks($limit){
         return $this->model::select('id', 'title', 'isbn')
         ->withCount('borrows')

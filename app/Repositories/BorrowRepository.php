@@ -24,23 +24,26 @@ class BorrowRepository extends BaseRepository
         $this->model = $borrow;
     }
 
+    /**
+     * Retrieve the number of active users on a weekly basis.
+     *
+     * @return array The response array containing the weekly active users data.
+     */
     public function weeklyActiveUsers(){
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
 
-        // Query to get active borrowers grouped by week for the current month
         $weeklyActiveBorrowers = DB::table('borrows')
             ->select(
-                DB::raw('EXTRACT(week FROM borrow_date) as week'), // Extract the week number from borrow_date
-                DB::raw('COUNT(DISTINCT user_id) as active_borrowers') // Count distinct users for each week
+                DB::raw('EXTRACT(week FROM borrow_date) as week'),
+                DB::raw('COUNT(DISTINCT user_id) as active_borrowers')
             )
-            ->whereYear('borrow_date', $currentYear) // Filter by current year
-            ->whereMonth('borrow_date', $currentMonth) // Filter by current month
-            ->groupBy(DB::raw('EXTRACT(week FROM borrow_date)')) // Group by week number
-            ->orderBy('week') // Order by week number
+            ->whereYear('borrow_date', $currentYear)
+            ->whereMonth('borrow_date', $currentMonth)
+            ->groupBy(DB::raw('EXTRACT(week FROM borrow_date)'))
+            ->orderBy('week')
             ->get();
 
-        // Prepare the data in a format suitable for the front-end chart
         $weeklyData = [];
         $i=1;
         foreach ($weeklyActiveBorrowers as $weekData) {
@@ -51,6 +54,12 @@ class BorrowRepository extends BaseRepository
     }
 
 
+
+    /**
+     * Retrieves the books that have been borrowed for the longest time.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function longestBorrowedBooks(){
         return DB::table('borrows')
         ->join('books', 'borrows.book_id', '=', 'books.id')
@@ -65,7 +74,6 @@ class BorrowRepository extends BaseRepository
         ->orderByDesc('avg_borrow_duration')
         ->limit(10)
         ->get();
-
     }
 
 }

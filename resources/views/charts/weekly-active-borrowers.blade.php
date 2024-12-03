@@ -1,5 +1,5 @@
 <!-- resources/views/charts/weekly-active-borrowers.blade.php -->
-<div style="height: 400px; width: 800px">
+<div style="height: 400px; width: 700px">
     <canvas id="weeklyActiveBorrowersChart"></canvas>
 </div>
 
@@ -12,8 +12,6 @@
         .then(data => {
             if (data.success) {
                 const weeklyData = data.data;
-
-                // Extract labels (weeks) and data (borrower counts)
                 const labels = Object.keys(weeklyData);
                 const borrowerCounts = Object.values(weeklyData);
 

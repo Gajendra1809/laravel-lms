@@ -14,11 +14,23 @@ class PaymentController extends Controller
 {
     use JsonResponseTrait;
 
+    /**
+     * Display the payment form view.
+     *
+     * @param int $borrowId
+     * @return \Illuminate\Http\Response
+     */
     public function showPaymentForm($borrowId){
         $borrow = Borrow::findOrFail($borrowId);
         return view('payment.payment-form', compact('borrow'));
     }
 
+    /**
+     * Create a Stripe checkout session for the given borrow.
+     *
+     * @param int $borrow The borrow to create a checkout session for.
+     * @return array The Stripe checkout session ID.
+     */
     public function createCheckoutSession($borrow){
         Stripe::setApiKey(config('services.stripe.secret'));
         $borrow = Borrow::findOrFail($borrow);
@@ -49,6 +61,15 @@ class PaymentController extends Controller
         }
     }
 
+    /**
+     * Retrieve a Stripe setup intent for the current user.
+     *
+     * The setup intent is used to setup a customer's payment method.
+     * The intent is created if it doesn't already exist.
+     *
+     * @throws \Throwable
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function showSubscriptionForm(){
         try {
             /** @var \App\Models\User $user */
@@ -61,6 +82,12 @@ class PaymentController extends Controller
         }
     }
 
+    /**
+     * Create a new subscription for the current user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createSubscription(Request $request){
         try {
             /** @var \App\Models\User $user */

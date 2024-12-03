@@ -216,10 +216,22 @@ class BorrowService
         return $this->borrowRepository->findWithConditions($conditions, $relations);
     }
 
+    /**
+     * Retrieves the most borrowed books.
+     *
+     * @param int $limit The number of top borrowed books to retrieve. Default is 5.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function mostBorrowedBooks($limit){
         return $this->bookRepository->mostBorrowedBooks($limit);
     }
 
+    /**
+     * Retrieves the count of available and not available books.
+     *
+     * @return array The array containing the count of available and not available books.
+     */
     public function booksAvailabilityCount(){
         $conditions = ['available' => StatusEnum::AVAILABLE->value];
         $response['available'] = $this->bookRepository->findWithConditions($conditions)->count();
@@ -228,6 +240,11 @@ class BorrowService
         return $response;
     }
     
+    /**
+     * Retrieves the books that have been borrowed for the longest time.
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function longestBorrowedBooks(){
         return $this->borrowRepository->longestBorrowedBooks();
     }

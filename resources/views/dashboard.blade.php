@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="charts-container" style="margin-left: 50px; margin-right: 50px">
-        <h2>Library Analytics</h2>
+        <h2 class="text-2xl font-bold mb-4 text-gray-700">Library Analytics</h2>
 
         <div style="display: flex; justify-content: space-between">
             <div>
