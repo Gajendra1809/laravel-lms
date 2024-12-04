@@ -76,7 +76,7 @@ class BaseRepository
         return $this->model::search($query)->get();
     }
 
-    public function findWithConditions(array $conditions = [], array $relations = [], bool $singleResult = false)
+    public function findWithConditions(array $conditions = [], array $relations = [], bool $singleResult = false, bool $count = false)
     {
         $query = $this->model->newQuery();
         foreach ($conditions as $column => $value) {
@@ -86,8 +86,11 @@ class BaseRepository
                 $query = $query->where($column, $value);
             }
         }
-        if (!empty($relations)) {
+        if (!empty($relations) && !$count) {
             $query = $query->with($relations);
+        }
+        if ($count) {
+            return $query->count();
         }
         return $singleResult ? $query->first() : $query->get();
     }

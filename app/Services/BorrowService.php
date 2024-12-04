@@ -234,9 +234,9 @@ class BorrowService
      */
     public function booksAvailabilityCount(){
         $conditions = ['available' => StatusEnum::AVAILABLE->value];
-        $response['available'] = $this->bookRepository->findWithConditions($conditions)->count();
+        $response['available'] = $this->bookRepository->findWithConditions($conditions, count: true);
         $conditions = ['available' => StatusEnum::NOTAVAILABLE->value];
-        $response['not_available'] = $this->bookRepository->findWithConditions($conditions)->count();
+        $response['not_available'] = $this->bookRepository->findWithConditions($conditions, count: true);
         return $response;
     }
     
