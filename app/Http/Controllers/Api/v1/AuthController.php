@@ -14,7 +14,7 @@ use App\Services\UserService;
 /**
  * Controller for Auth endpoints.
  *
- * @package App\Http\Controllers
+ * @package App\Http\Controllers\Api\v1
  *
  */
 class AuthController extends Controller

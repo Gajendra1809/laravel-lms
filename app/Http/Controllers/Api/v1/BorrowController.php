@@ -10,6 +10,12 @@ use App\Traits\JsonResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Controller for Borrow endpoints.
+ *
+ * @package App\Http\Controllers\Api\v1
+ *
+ */
 class BorrowController extends Controller
 {
     use JsonResponseTrait;

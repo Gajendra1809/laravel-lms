@@ -11,6 +11,12 @@ use App\Services\BookService;
 use App\Traits\JsonResponseTrait;
 use App\Models\Book;
 
+/**
+ * Controller for Book endpoints.
+ *
+ * @package App\Http\Controllers\Api\v1
+ *
+ */
 class BookController extends Controller
 {
     use JsonResponseTrait;
