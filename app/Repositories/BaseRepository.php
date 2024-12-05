@@ -76,6 +76,17 @@ class BaseRepository
         return $this->model::search($query)->get();
     }
 
+    /**
+     * Retrieve records based on specified conditions and relations.
+     *
+     * @param array $conditions An associative array of conditions for filtering.
+     *
+     * @param array $relations  An array of relationships to eager load.
+     * @param bool $singleResult If true, returns only the first matching record.
+     * @param bool $count If true, returns the count of records that match the conditions.
+     *
+     * @return mixed The result of the query, either a collection of records, a single record, or a count.
+     */
     public function findWithConditions(array $conditions = [], array $relations = [], bool $singleResult = false, bool $count = false)
     {
         $query = $this->model->newQuery();
