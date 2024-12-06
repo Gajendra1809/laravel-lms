@@ -16,4 +16,6 @@
     <livewire:pulse.slow-jobs cols="6" />
 
     <livewire:pulse.slow-outgoing-requests cols="6" />
+
+    <livewire:pulse.top-borrowed-books cols="4" rows="3" />
 </x-pulse>
